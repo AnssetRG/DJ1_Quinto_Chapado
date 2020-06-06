@@ -6,6 +6,8 @@ public class BallController : MonoBehaviour
 {
     private int touchedFloor = 0;
     private bool touchedRam;
+    private bool touchProtector;
+    private bool check;
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Holder")
@@ -61,20 +63,51 @@ public class BallController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.tag == "Protector")
+        {
+            touchProtector = true;
+        }
         if (other.tag == "Net")
         {
-            print("ENCESTO");
-            if (touchedRam)
+            if (!touchProtector)
             {
-                //ganas 1 punto
-                GameController.instance.incrementBalls(1);
+                print("ENCESTO");
+                if (touchedRam)
+                {
+                    //ganas 1 punto
+                    GameController.instance.incrementBalls(1);
+                }
+                else
+                {
+                    //ganas 2 puntos
+                    GameController.instance.incrementBalls(2);
+                }
+                GameController.instance.playSound(1);
             }
-            else
-            {
-                //ganas 2 puntos
-                GameController.instance.incrementBalls(2);
-            }
-            GameController.instance.playSound(1);
+        }
+    }
+
+    void OnBecameInvisible()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            Destroy(gameObject);
+            GameController.instance.checkGameOver();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+    void checkDestruction()
+    {
+        if (!check)
+        {
+            check = true;
+            Destroy(gameObject);
+            GameController.instance.checkGameOver();
         }
     }
 }

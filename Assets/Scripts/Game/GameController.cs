@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> balls;
-    private float minX = -4.7f, maxX = 8f, minY = -2.5f, maxY = 1.5f;
+    private float minX = -1.7f, maxX = 6f, minY = -2.5f, maxY = 1.5f;
     public AudioSource audio;
     private float volume = 1.0f;
     [SerializeField]
@@ -60,12 +60,20 @@ public class GameController : MonoBehaviour
     public void decrementBalls()
     {
         total_balls--;
-        if (total_balls < 0)
-        {
-            //crear escena Game Over
-        }
         txtBalls.text = total_balls.ToString();
         //actualizar caja de texto
+    }
+
+    public void checkGameOver()
+    {
+        if (total_balls < 0)
+        {
+            print("Mandar escena Game Over");
+        }
+        else
+        {
+            CreateBall();
+        }
     }
 
     public void playSound(int index)

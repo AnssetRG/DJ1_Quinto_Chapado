@@ -67,6 +67,7 @@ public class Shooting : MonoBehaviour
             body.isKinematic = false;
             myCollider.enabled = true;
             body.AddForce(GetForce(Input.mousePosition));
+            GameController.instance.decrementBalls();
             ShowPath(false);
             //TODO restar pelotas
         }
@@ -142,7 +143,8 @@ public class Shooting : MonoBehaviour
             GetComponent<Renderer>().material.SetColor("_Color", new Color(c.r, c.g, c.b, life));
             if (life < 0)
             {
-                //crear nueva pelota
+                gameObject.SetActive(false);
+                GameController.instance.checkGameOver();
             }
         }
     }
