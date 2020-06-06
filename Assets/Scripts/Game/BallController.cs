@@ -58,4 +58,23 @@ public class BallController : MonoBehaviour
             }
         }
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Net")
+        {
+            print("ENCESTO");
+            if (touchedRam)
+            {
+                //ganas 1 punto
+                GameController.instance.incrementBalls(1);
+            }
+            else
+            {
+                //ganas 2 puntos
+                GameController.instance.incrementBalls(2);
+            }
+            GameController.instance.playSound(1);
+        }
+    }
 }

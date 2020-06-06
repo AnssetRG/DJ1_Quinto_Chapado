@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7448572209811343354}
   - component: {fileID: 2710462399452911459}
   - component: {fileID: 151680467443936826}
+  - component: {fileID: 1679929348974686927}
+  - component: {fileID: -5127581205404650603}
   m_Layer: 0
   m_Name: 0
   m_TagString: Balls
@@ -107,7 +109,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115810139102634349}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -120,3 +122,31 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1679929348974686927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115810139102634349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 053309874095caa4c882a306a632cc8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  power: 2
+  life: 1
+  dead_sense: 25
+  dots: 30
+--- !u!114 &-5127581205404650603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115810139102634349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a62eea33942be4c87301e9a41e0ec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

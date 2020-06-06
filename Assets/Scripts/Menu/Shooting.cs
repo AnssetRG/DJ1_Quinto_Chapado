@@ -14,19 +14,18 @@ public class Shooting : MonoBehaviour
     private GameObject Dots;
     private List<GameObject> projectilePath;
     private Rigidbody2D body;
-    private Collider2D collider;
+    private Collider2D myCollider;
 
     void Awake()
     {
         body = GetComponent<Rigidbody2D>();
-        collider = GetComponent<Collider2D>();
-
+        myCollider = GetComponent<Collider2D>();
     }
     void Start()
     {
         Dots = GameObject.Find("dots");
         body.isKinematic = true;
-        collider.enabled = false;
+        myCollider.enabled = false;
         startPosition = transform.position;
         //Sacas todos los transforms childs, se convierte en una lista y se consigue los gameobjects de cada child (versión pro sin usar child count)
         projectilePath = Dots.transform.Cast<Transform>().ToList().ConvertAll(t => t.gameObject);
@@ -57,19 +56,18 @@ public class Shooting : MonoBehaviour
         }
         else if (aiming && !shoot)
         {
-            aiming = false;
-            ShowPath(false);
             if (inDeadZone(Input.mousePosition) || inReleaseZone(Input.mousePosition))
             {
-
+                aiming = false;
+                ShowPath(false);
                 return;
             }
+            aiming = false;
             shoot = true;
-            //aiming = false;
             body.isKinematic = false;
-            collider.enabled = true;
+            myCollider.enabled = true;
             body.AddForce(GetForce(Input.mousePosition));
-            //ShowPath(false);
+            ShowPath(false);
             //TODO restar pelotas
         }
     }
@@ -77,7 +75,7 @@ public class Shooting : MonoBehaviour
     //Calcular la trayectoria y separación de los puntos
     void CalculatePath()
     {
-        Vector2 vel = GetForce(Input.mousePosition) * Time.deltaTime / body.mass;
+        Vector2 vel = GetForce(Input.mousePosition) * Time.fixedDeltaTime / body.mass;
         for (int i = 0; i < projectilePath.Count; i++)
         {
             projectilePath[i].GetComponent<Renderer>().enabled = true;
@@ -91,13 +89,20 @@ public class Shooting : MonoBehaviour
     //Ecuación parabólica MRUV
     Vector2 PathPoint(Vector2 sartP, Vector2 starVel, float t)
     {
-        return sartP + starVel * t + 0.5f * Physics2D.gravity * t;
+        return sartP + starVel * t + 0.5f * Physics2D.gravity * t * t;
     }
 
     Vector2 GetForce(Vector3 mousePosition)
     {
         return (new Vector2(startPosition.x, startPosition.y) - new Vector2(mousePosition.x, mousePosition.y)) * power;
     }
+
+
+    bool inReleaseZone(Vector2 mouse)
+    {
+        return (mouse.x <= 70);
+    }
+
 
     //Mostrar los puntos o no en el mapa para la trayectoria.
     void ShowPath(bool hide)
@@ -108,6 +113,14 @@ public class Shooting : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter2D(Collision2D target)
+    {
+        if (target.gameObject.tag == "Ground")
+        {
+            hit_ground = true;
+        }
+    }
+
     bool inDeadZone(Vector3 mousePosition)
     {
         return Mathf.Abs(startPosition.x - mousePosition.x) <= dead_sense && Mathf.Abs(startPosition.y - mousePosition.y) <= dead_sense;
@@ -115,7 +128,7 @@ public class Shooting : MonoBehaviour
 
     bool inReleaseZone(Vector3 mousePosition)
     {
-        return mousePosition.x < 70;
+        return mousePosition.x <= 70;
     }
 
     void Update()

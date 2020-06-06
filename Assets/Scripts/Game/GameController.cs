@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class GameController : MonoBehaviour
     private int index = 0;
     private int total_balls = 10;
     public static GameController instance;
-
+    [SerializeField]
+    private Text txtBalls;
     void Awake()
     {
         if (instance == null)
@@ -29,6 +31,7 @@ public class GameController : MonoBehaviour
 
     void setInitialBalls()
     {
+        txtBalls.text = total_balls.ToString();
         //setear balls en caja de texto
     }
 
@@ -39,10 +42,13 @@ public class GameController : MonoBehaviour
         {
             total_balls = 10;
         }
+        txtBalls.text = total_balls.ToString();
     }
     void Start()
     {
+        audio = GetComponent<AudioSource>();
         CreateBall();
+        setInitialBalls();
     }
 
     void CreateBall()
@@ -54,6 +60,11 @@ public class GameController : MonoBehaviour
     public void decrementBalls()
     {
         total_balls--;
+        if (total_balls < 0)
+        {
+            //crear escena Game Over
+        }
+        txtBalls.text = total_balls.ToString();
         //actualizar caja de texto
     }
 
